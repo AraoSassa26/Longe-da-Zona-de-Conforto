@@ -2,44 +2,32 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obrigado!</title>
+    <title>Obrigado</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: Arial;
+            background: #f6f6f6;
+            padding: 40px;
+            text-align: center;
+        }
+        .box {
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-
-        <h1 class="titulo" id="tituloObrigado">Obrigado!</h1>
-
-        <div class="card">
-
-            <p class="msg" id="mensagemAgradecimento">
-                Agradecemos por baixar o livro!
-            </p>
-
-            <a href="index.html" class="btn">
-                Voltar ao Início
-            </a>
-
-        </div>
-
-    </div>
-
-
- <script>
-    // Recupera o nome
-    const nomeVisitante = localStorage.getItem("visitante") || "Leitor";
-
-    // Troca o título e a mensagem
-    document.getElementById("tituloObrigado").innerText =
-        `Obrigado, ${nomeVisitante}!`;
-
-    document.getElementById("mensagemAgradecimento").innerText =
-        `${nomeVisitante}, o seu download foi concluído com sucesso. Esperamos que aproveite a leitura!`;
-</script>
-
+<div class="box">
+    <h1>Obrigado! 🙌</h1>
+    <p>Seu download já começou.</p>
+    <p>Aproveite a leitura!</p>
+</div>
 
 </body>
 </html>
