@@ -5,8 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bem-vindo</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 14px;
+            width: 100%;
+            background: #111;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+    </style>
 </head>
 <body>
 
@@ -14,39 +37,87 @@
 
         <h1 class="titulo">Bem-vindo!</h1>
 
-        <p class="descricao">
-            Digite o seu nome para continuar.
-        </p>
+        <p class="descricao">Digite os seus dados para continuar.</p>
 
-        <input 
-            type="text" 
-            id="nome" 
-            placeholder="Seu nome..."
-            class="input"
-        >
+        <input id="nome" class="input" type="text" placeholder="Seu nome...">
 
-        <button class="btn" onclick="continuar()">
-            Continuar
-        </button>
+        <select id="pais" class="input" onchange="carregarCidades()">
+            <option value="">Selecione o país...</option>
+            <option value="Angola">Angola</option>
+            <option value="Brasil">Brasil</option>
+            <option value="Cabo Verde">Cabo Verde</option>
+            <option value="Guiné-Bissau">Guiné-Bissau</option>
+            <option value="Guiné Equatorial">Guiné Equatorial</option>
+            <option value="Moçambique">Moçambique</option>
+            <option value="Portugal">Portugal</option>
+            <option value="São Tomé e Príncipe">São Tomé e Príncipe</option>
+            <option value="Timor-Leste">Timor-Leste</option>
+        </select>
+
+        <select id="cidade" class="input">
+            <option value="">Selecione a cidade...</option>
+        </select>
+
+        <button class="btn" onclick="continuar()">Continuar</button>
 
     </div>
 
-    <script>
-        function continuar() {
-            const nome = document.getElementById("nome").value.trim();
+<script>
+const cidadesPorPais = {
+    "Angola": ["Luanda", "Benguela", "Lubango", "Huambo"],
+    "Brasil": ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador"],
+    "Cabo Verde": ["Praia", "Mindelo"],
+    "Guiné-Bissau": ["Bissau"],
+    "Guiné Equatorial": ["Malabo", "Bata"],
+    "Moçambique": ["Maputo", "Beira", "Nampula"],
+    "Portugal": ["Lisboa", "Porto", "Coimbra"],
+    "São Tomé e Príncipe": ["São Tomé", "Santo António"],
+    "Timor-Leste": ["Díli", "Baucau"]
+};
 
-            if (!nome) {
-                alert("Por favor, digite o seu nome.");
-                return;
-            }
+function carregarCidades() {
+    const pais = document.getElementById("pais").value;
+    const cidadeSelect = document.getElementById("cidade");
 
-            // Guardar o nome para usar nas outras páginas
-            localStorage.setItem("visitante", nome);
+    cidadeSelect.innerHTML = "<option value=''>Selecione a cidade...</option>";
 
-            // Redireciona
-            window.location.href = "livro.html";
-        }
-    </script>
+    if (cidadesPorPais[pais]) {
+        cidadesPorPais[pais].forEach(c => {
+            const option = document.createElement("option");
+            option.value = c;
+            option.textContent = c;
+            cidadeSelect.appendChild(option);
+        });
+    }
+}
+
+function continuar() {
+    const nome = document.getElementById("nome").value.trim();
+    const pais = document.getElementById("pais").value;
+    const cidade = document.getElementById("cidade").value;
+
+    if (!nome || !pais || !cidade) {
+        alert("Preencha todos os campos.");
+        return;
+    }
+
+    // Salvar localmente (opcional)
+    localStorage.setItem("visitante", nome);
+
+    // Enviar para o Google Sheets
+    fetch("https://script.google.com/macros/s/AKfycbwyiPvsmdauJKEtcWmhetiW3oc-4ZweNTIXudODcLUepLs1_EuJamlxgE93yQ0kz8Ba/exec", {
+        method: "POST",
+        body: new URLSearchParams({
+            nome,
+            pais,
+            cidade
+        })
+    });
+
+    // Redirecionar
+    window.location.href = "livro.html";
+}
+</script>
 
 </body>
 </html>
