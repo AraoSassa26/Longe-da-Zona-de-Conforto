@@ -1,67 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Download do Livro</title>
-
-    <link rel="stylesheet" href="css/style.css" />
-
-    <style>
-        body {
-            background: #f6f6f6;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .container {
-            max-width: 450px;
-            margin: 40px auto;
-            padding: 25px;
-            background: white;
-            border-radius: 18px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
-    </style>
-
-    <script>
-function baixar() {
-
-    // Registrar download na planilha
-    fetch("https://script.google.com/macros/s/AKfycbwyiPvsmdauJKEtcWmhetiW3oc-4ZweNTIXudODcLUepLs1_EuJamlxgE93yQ0kz8Ba/exec", {
-        method: "POST",
-        body: new URLSearchParams({
-            download: "sim",
-            nome: localStorage.getItem("visitante")
-        })
-    });
-
-    // Fazer download
-    const link = document.createElement("a");
-    link.href = "arquivos/Longe da Zona de Conforto.pdf";
-    link.download = "Longe da Zona de Conforto.pdf";
-    link.click();
-
-    setTimeout(() => {
-        window.location.href = "obrigado.html";
-    }, 1000);
-}
-</script>
-
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Download do Livro</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body{background:#f6f6f6;font-family:Arial}
+    .container{max-width:450px;margin:40px auto;padding:25px;background:#fff;border-radius:18px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+    .botao{margin-top:20px;padding:14px;width:100%;background:#111;color:#fff;border:none;border-radius:10px;font-size:18px;cursor:pointer}
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <img src="arquivos/capa.jpg" alt="Capa do Livro" />
+  <div class="container">
+    <img src="arquivos/capa.jpg" alt="Capa do Livro" style="width:100%;border-radius:12px">
+    <h1 id="nomeLivro">Longe da Zona de Conforto</h1>
+    <h3 id="ola"></h3>
+    <p><strong>Autora:</strong> Nilda Sassa</p>
+    <p><strong>Lançamento:</strong> 2025</p>
 
-        <h1 id="nomeLivro">Longe da Zona de Conforto</h1>
+    <button class="botao" id="baixarBtn">Baixar Livro</button>
+    <p id="hint" style="font-size:13px;color:#666;margin-top:12px"></p>
+  </div>
 
-        <h3 id="ola"></h3>
+<script>
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwCxurRbATGcs4I94ozjkbeng84Dce5182MoYvwezIvcL5lq70Uw5AEs-j1-6CYR8xG/exec";
 
-        <p><strong>Autora:</strong> Nilda Sassa</p>
-        <p><strong>Lançamento:</strong> 2025</p>
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+function isSafari() {
+  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+}
 
-        <button class="botao" onclick="baixar()">Baixar Livro</button>
-    </div>
+window.addEventListener('DOMContentLoaded', () => {
+  const nome = localStorage.getItem("visitante_nome") || "";
+  const pais = localStorage.getItem("visitante_pais") || "";
+  const cidade = localStorage.getItem("visitante_cidade") || "";
+
+  if (!nome) {
+    alert("Por favor, preencha o formulário primeiro.");
+    window.location.href = "index.html";
+    return;
+  }
+
+  document.getElementById("ola").innerText = `Olá, ${nome}!`;
+  // dica para iPhone/Safari
+  if (isIOS() || isSafari()) {
+    document.getElementById("hint").innerText = "Nota: em iPhone/Safari o ficheiro pode abrir no browser em vez de ser descarregado. Para salvar: toque em 'Partilhar' → 'Guardar em Ficheiros'.";
+  }
+
+  document.getElementById("baixarBtn").addEventListener("click", async () => {
+    // registrar download (envia nome/pais/cidade + download=sim)
+    try {
+      await fetch(WEBAPP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: new URLSearchParams({
+          nome,
+          pais,
+          cidade,
+          download: "sim"
+        })
+      });
+    } catch (e) {
+      // no-cors não permite ver resposta; apenas continuamos
+      console.warn("Erro no fetch (provável no-cors):", e);
+    }
+
+    // estratégia de download:
+    // 1) link com download (funciona em muitos navegadores)
+    // 2) abrir em nova aba como fallback (útil em Safari/Edge)
+    const fileUrl = "arquivos/Longe da Zona de Conforto.pdf";
+
+    // Tenta forçar download
+    const a = document.createElement("a");
+    a.href = fileUrl;
+    a.download = "Longe da Zona de Conforto.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Se estiver iOS / Safari, abrir em nova aba (ajuda salvar)
+    if (isIOS() || isSafari()) {
+      window.open(fileUrl, "_blank");
+    }
+
+    // redirecionar para obrigado
+    setTimeout(() => window.location.href = "obrigado.html", 1200);
+  });
+});
+</script>
 </body>
 </html>
