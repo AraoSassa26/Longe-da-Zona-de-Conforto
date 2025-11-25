@@ -1,0 +1,97 @@
+/* ----- CONFIGURAÇÕES GERAIS ----- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6f6f6;
+}
+
+/* ----- CONTAINER CENTRAL ----- */
+.container {
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ----- IMAGENS (CAPA DO LIVRO) ----- */
+.container img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+/* ----- TÍTULOS ----- */
+h1 {
+    margin-top: 18px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+}
+
+/* ----- TEXTOS ----- */
+p {
+    font-size: 16px;
+    margin-top: 5px;
+    color: #555;
+}
+
+/* ----- BOTÕES ----- */
+.botao {
+    margin-top: 25px;
+    padding: 14px 20px;
+    width: 100%;
+    background: #111;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao:hover {
+    opacity: 0.85;
+}
+
+/* ----- FORMULÁRIOS (para o index) ----- */
+.label {
+    display: block;
+    text-align: left;
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.input:focus {
+    border-color: #111;
+    outline: none;
+}
+
+/* ----- RESPONSIVIDADE ----- */
+@media (max-width: 480px) {
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .botao {
+        font-size: 17px;
+    }
+}
