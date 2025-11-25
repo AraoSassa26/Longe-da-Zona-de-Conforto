@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bem-vindo</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <h1 class="titulo">Bem-vindo!</h1>
+
+        <p class="descricao">
+            Digite o seu nome para continuar.
+        </p>
+
+        <input 
+            type="text" 
+            id="nome" 
+            placeholder="Seu nome..."
+            class="input"
+        >
+
+        <button class="btn" onclick="continuar()">
+            Continuar
+        </button>
+
+    </div>
+
+    <script>
+        function continuar() {
+            const nome = document.getElementById("nome").value.trim();
+
+            if (!nome) {
+                alert("Por favor, digite o seu nome.");
+                return;
+            }
+
+            // Guardar o nome para usar nas outras páginas
+            localStorage.setItem("visitante", nome);
+
+            // Redireciona
+            window.location.href = "livro.html";
+        }
+    </script>
+
+</body>
+</html>
